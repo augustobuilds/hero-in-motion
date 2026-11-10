@@ -1,0 +1,182 @@
+{
+  "checked_on": "2026-11-10",
+  "python": "3.9.25, 3.11.17, 3.12.3, 3.13.17",
+  "scope": "Local checks on a fresh standalone copy (a git clone) of this repository: the unit tests on four Python versions, the browser tests, the documented commands, metadata inspection of the shipped sample film, a check that the film matches the kit, a check that the live demo in docs/ matches the examples, and a measurement of what the demo's pages fetch before and after Play. The sample film and its poster were rendered from the current film/explainer.html by scripts/render_film.py (square, English, crf 18, with its coded soundtrack); the poster is the last frame, rendered as a still.",
+  "unit_tests": {
+    "command": "python3 -m unittest discover -s tests -v",
+    "exit_code": 0,
+    "ran": 53,
+    "result": "OK",
+    "skipped_with_all_optional_tools": 0,
+    "skipped_with_ffmpeg_without_playwright": 14,
+    "skipped_with_no_optional_tools": 16
+  },
+  "browser_tests": {
+    "command": "HERO_CHROMIUM=<chromium> python3 -m unittest tests.test_browser -v",
+    "exit_code": 0,
+    "ran": 14,
+    "result": "OK",
+    "runner": "Playwright for Python 1.64 with Chromium 153 (headless)",
+    "repeated": 3
+  },
+  "documented_commands": [
+    {
+      "command": "mkdir -p output",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 scripts/build_hero.py examples/hero.json --output output/hero.html",
+      "exit_code": 0,
+      "output": "Wrote output/hero.html"
+    },
+    {
+      "command": "cp -f examples/poster.svg output/poster.svg",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 scripts/build_hero.py examples/hero.es.json --output output/hero-es.html",
+      "exit_code": 0,
+      "output": "Wrote output/hero-es.html",
+      "note": "The Spanish example; the page points at ./poster-es.svg."
+    },
+    {
+      "command": "cp -f examples/poster-es.svg output/poster-es.svg",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 scripts/build_hero.py examples/hero.json --output output/hero.html --overwrite",
+      "exit_code": 0,
+      "output": "Wrote output/hero.html"
+    },
+    {
+      "command": "python3 scripts/inspect_media.py output/lantern-lake.mp4",
+      "exit_code": 2,
+      "note": "Expected exit 2 before the example's video is rendered: output/lantern-lake.mp4 does not exist yet."
+    },
+    {
+      "command": "python3 scripts/film_data.py --check",
+      "exit_code": 0,
+      "output": "film/explainer.html matches the kit"
+    },
+    {
+      "command": "python3 scripts/inspect_media.py media/hero-in-motion-demo.mp4",
+      "exit_code": 0,
+      "metadata": {
+        "codec": "h264",
+        "width": 1080,
+        "height": 1080,
+        "frame_rate": "30/1",
+        "frames": 480,
+        "duration_s": 16.0,
+        "bytes": 3372077,
+        "audio_streams": 1,
+        "audio": "aac, 48 kHz, stereo"
+      }
+    },
+    {
+      "command": "python3 scripts/inspect_media.py media/hero-in-motion-demo.mp4 --check",
+      "exit_code": 0,
+      "budget": {
+        "length": "pass",
+        "weight": "pass",
+        "height": "pass",
+        "quick start": "pass",
+        "sound": "note"
+      },
+      "found": {
+        "length": "16.0 s",
+        "weight": "211 kB per second (3.37 MB in all)",
+        "height": "1080 px",
+        "quick start": "index first",
+        "sound": "has a sound track"
+      }
+    },
+    {
+      "command": "python3 scripts/build_hero.py examples/hero.json --output output/hero-block.html --fragment",
+      "exit_code": 0,
+      "output": "Wrote output/hero-block.html"
+    },
+    {
+      "command": "python3 scripts/build_demo.py --check",
+      "exit_code": 0,
+      "output": "docs/ matches the examples"
+    },
+    {
+      "command": "HERO_CHROMIUM=<chromium> python3 scripts/measure_page.py docs/index.html --json",
+      "exit_code": 0,
+      "found": {
+        "video_bytes_before_play": 0,
+        "video_bytes_after_play": 258225
+      },
+      "note": "Counted by a local server on 127.0.0.1 with nothing cached; the clip is docs/lantern-lake.webm."
+    },
+    {
+      "command": "HERO_CHROMIUM=<chromium> python3 scripts/measure_page.py docs/autoplay.html --json",
+      "exit_code": 0,
+      "found": {
+        "video_bytes_before_play": 258225
+      },
+      "note": "The same hero built with autoplay: the whole clip is fetched without a press."
+    }
+  ],
+  "rendered_media": {
+    "media/hero-in-motion-demo.mp4": {
+      "rendered_with": "python3 scripts/render_film.py --format square --lang en --crf 18",
+      "bytes": 3371594,
+      "sha256": "7cb8be73efb4b97c1a6e900389ce5d001031ea5be976e6598b11ab07b4000bb9",
+      "loudness": {
+        "integrated_lufs": -14.5,
+        "true_peak_dbtp": -1.3,
+        "meter": "ffmpeg ebur128"
+      }
+    },
+    "media/hero-in-motion-demo-poster.png": {
+      "rendered_with": "python3 scripts/render_film.py --format square --lang en --still 15.9667",
+      "width": 1080,
+      "height": 1080,
+      "bytes": 621965,
+      "sha256": "67df1d5cdaa1ca9a5fe29ccb299f999e605681b8cb737c8e2c864dbc7d4c192b"
+    }
+  },
+  "sample_output": {
+    "path": "output/hero.html",
+    "bytes": 12955,
+    "sha256": "3418be76b2832e6710f5ed9b274ad55cbaf3391b9b24eb47fcb741bf46e2931b"
+  },
+  "cli_errors": {
+    "rerun_without_overwrite_exit_code": 2,
+    "missing_output_folder_exit_code": 2
+  },
+  "local_links": {
+    "checked": 150,
+    "broken": 0,
+    "note": "template placeholders such as $video are not links and are skipped"
+  },
+  "svg": {
+    "examples/poster.svg": {
+      "xml": "ok",
+      "bytes": 40780,
+      "title_and_desc": true
+    },
+    "examples/poster-es.svg": {
+      "xml": "ok",
+      "bytes": 40821,
+      "title_and_desc": true
+    },
+    "assets/hero-anatomy-diagram.svg": {
+      "xml": "ok",
+      "bytes": 8565,
+      "title_and_desc": true
+    }
+  },
+  "not_checked": [
+    "Frame-by-frame decode of the sample film (it was reviewed as stills at chosen times), and any user-supplied video",
+    "Screen reader output (VoiceOver, NVDA) and real mobile browsers",
+    "Factual or rights review of user-supplied content"
+  ],
+  "sample_fragment": {
+    "path": "output/hero-block.html",
+    "bytes": 12574,
+    "sha256": "643540eedbd8b1e7dd609345f1505d85d6eaaf79d53cf1c5b6013341801705dd"
+  }
+}

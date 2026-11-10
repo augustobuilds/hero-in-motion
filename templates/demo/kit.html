@@ -1,0 +1,35 @@
+$hero<section class="demo-band" aria-labelledby="demo-proof">
+<div class="demo-wrap">
+<h2 id="demo-proof">What this page has fetched</h2>
+<ul class="demo-tiles">
+<li><p class="demo-num" id="demo-video">0 B</p><p>of video so far. <span id="demo-video-note" data-after="It was asked for when Play was pressed, and not before.">The page has not asked for it. Press Play on the picture and watch this number.</span></p></li>
+<li><p class="demo-num">$before</p><p>is everything this hero needs before Play: its words, styles and script ($block) and the poster ($poster_size).</p></li>
+<li><p class="demo-num">$clip</p><p>is the whole 10-second clip$clip_note. It is drawn with code, starts on the poster and ends on it.</p></li>
+</ul>
+<p>The same hero built the usual way starts by itself and fetches the video whether you wanted it or not. <a href="autoplay.html">See the autoplay version and its meter.</a></p>
+</div>
+</section>
+<section class="demo-wrap" aria-labelledby="demo-does">
+<h2 id="demo-does">What the hero does without being asked</h2>
+<ul class="demo-list">
+<li><b>Words first.</b> The headline, the text and the button are plain HTML. They work when the video is slow, blocked or missing.</li>
+<li><b>Nothing moves until you press Play.</b> No autoplay, and the video file is not requested before the press.</li>
+<li><b>It stops by itself.</b> Scroll it out of view or switch tabs and it pauses. It never starts again by itself.</li>
+<li><b>It listens to reduced motion.</b> When your system asks for less motion, the page says so and stays still until you choose.</li>
+<li><b>It fails softly.</b> A missing poster becomes its description, and a missing video becomes a short message. The page stays usable.</li>
+<li><b>It tells screen readers what happens.</b> Loading, playing, paused and finished are each announced, in English or Spanish.</li>
+</ul>
+</section>
+<section class="demo-wrap" aria-labelledby="demo-looks">
+<h2 id="demo-looks">Three looks from three small files</h2>
+<p>Each of these pages is one JSON file with words, a poster and a video. The layout, the colours and the part of the picture to keep in view are fields in that file.</p>
+<ul class="demo-looks">
+$looks</ul>
+</section>
+<section class="demo-wrap" aria-labelledby="demo-make">
+<h2 id="demo-make">Make yours</h2>
+<pre class="demo-code">git clone $repo.git
+cd hero-in-motion
+python3 scripts/build_hero.py examples/$config --output output/hero.html</pre>
+<p>It needs Python 3.9 or newer and nothing else. Change the words, the poster and the video in the JSON file, or add <code>--fragment</code> to get just the hero block for a page you already have. No video yet? The kit can turn an SVG poster into a 10-second clip. <a href="$repo#readme">Read the guide on GitHub.</a></p>
+</section>

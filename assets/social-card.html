@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hero in Motion · social card</title>
+<!--
+  The source of docs/social-card.png, the picture a shared link to the demo or the repository shows.
+  It is a screenshot of this page at exactly 1280 x 640. The picture is the example's own poster.
+  To redraw it after changing the poster or the words, open this file in a browser window of that size and
+  save a screenshot, or use any headless browser (for example Playwright: page.screenshot at a 1280 x 640 viewport).
+-->
+<style>
+html, body { margin:0; }
+body { width:1280px; height:640px; overflow:hidden; position:relative; background:#06142a; color:#f4f1e8; font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+.art { position:absolute; right:-170px; top:-170px; width:900px; height:900px; -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 32%); mask-image:linear-gradient(90deg,transparent 0,#000 32%); }
+.shade { position:absolute; inset:0; background:linear-gradient(90deg,#06142a 0,#06142a 22%,rgba(6,20,42,.9) 41%,rgba(6,20,42,.2) 62%,rgba(6,20,42,0) 76%); }
+.words { position:absolute; left:72px; top:78px; width:640px; }
+.kicker { margin:0 0 18px; font-size:22px; font-weight:750; letter-spacing:.14em; text-transform:uppercase; color:#5dffae; }
+h1 { margin:0 0 22px; font-size:104px; line-height:.94; font-weight:850; letter-spacing:-.045em; }
+h1 span { color:#5dffae; }
+.say { margin:0; font-size:35px; line-height:1.22; font-weight:600; letter-spacing:-.015em; }
+.facts { position:absolute; left:72px; bottom:64px; display:flex; gap:14px; margin:0; padding:0; list-style:none; font-size:22px; font-weight:650; }
+.facts li { padding:10px 20px; border-radius:999px; border:2px solid rgba(244,241,232,.55); background:rgba(6,20,42,.72); white-space:nowrap; }
+.facts li:first-child { border-color:#5dffae; color:#5dffae; }
+.play { position:absolute; right:64px; bottom:60px; display:flex; align-items:center; gap:14px; padding:14px 28px; border-radius:999px; border:3px solid #fff; background:rgba(6,14,24,.86); color:#fff; font-size:28px; font-weight:700; }
+.play::before { content:""; border-style:solid; border-color:transparent transparent transparent #fff; border-width:12px 0 12px 20px; }
+</style>
+</head>
+<body>
+<img class="art" src="../examples/poster.svg" alt="">
+<div class="shade"></div>
+<div class="words">
+<p class="kicker">Free kit · no dependencies</p>
+<h1>Hero in <span>Motion</span></h1>
+<p class="say">A homepage hero that shows its words first and waits for Play.</p>
+</div>
+<ul class="facts">
+<li>0 B of video before Play</li>
+<li>No autoplay</li>
+<li>Pauses by itself</li>
+</ul>
+<div class="play">Play video</div>
+</body>
+</html>

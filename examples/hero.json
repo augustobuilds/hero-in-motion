@@ -1,0 +1,13 @@
+{
+  "lang": "en",
+  "title": "Lantern Lake Cabins · Hero in Motion example",
+  "badge": "Fictional example",
+  "headline": "Nights worth staying up for.",
+  "summary": "Lantern Lake Cabins: six timber cabins on a quiet northern lake, where the sky puts on a show most winter nights.",
+  "cta_label": "See the cabins",
+  "cta_href": "#details",
+  "video": "./lantern-lake.mp4",
+  "poster": "./poster.svg",
+  "poster_alt": "Green northern lights over a still lake, mirrored in the water, with a small lit cabin on the shore. A still illustration labelled fictional example.",
+  "details": "Lantern Lake Cabins is a made-up brand for this example. Swap in your own words, poster and video, and check the video's content, rights and size before you publish it."
+}

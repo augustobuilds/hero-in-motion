@@ -1,0 +1,13 @@
+{
+  "lang": "es",
+  "title": "Lantern Lake Cabins · ejemplo de Hero in Motion",
+  "badge": "Ejemplo ficticio",
+  "headline": "Noches que valen el desvelo.",
+  "summary": "Lantern Lake Cabins: seis cabañas de madera junto a un lago tranquilo del norte, donde el cielo da un espectáculo casi todas las noches de invierno.",
+  "cta_label": "Ver las cabañas",
+  "cta_href": "#details",
+  "video": "./lantern-lake.mp4",
+  "poster": "./poster-es.svg",
+  "poster_alt": "Auroras boreales verdes sobre un lago en calma, reflejadas en el agua, con una pequeña cabaña iluminada en la orilla. Ilustración fija con la etiqueta de ejemplo ficticio.",
+  "details": "Lantern Lake Cabins es una marca inventada para este ejemplo. Cambia el texto, el póster y el video por los tuyos, y revisa el contenido, los derechos y el tamaño del video antes de publicarlo."
+}

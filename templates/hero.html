@@ -1,0 +1,185 @@
+<style>
+.hm { --hm-bg:#f1f4f1; --hm-ink:#10202d; --hm-card:#ffffff; --hm-accent:#0b6a52; color-scheme:light dark; background:var(--hm-bg); color:var(--hm-ink); }
+@media (prefers-color-scheme:dark) { .hm { --hm-bg:#09121b; --hm-ink:#e7efea; --hm-card:#0f1c28; --hm-accent:#86e3c3; } }
+.hm *, .hm *::before, .hm *::after { box-sizing:border-box; }
+.hm [hidden] { display:none !important; }
+.hm-hero { position:relative; max-width:76rem; margin:auto; padding:clamp(1rem,5vw,4rem); display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:center; gap:clamp(1.5rem,5vw,4rem); }
+.hm-text h1 { margin:.2em 0 .35em; font-size:clamp(2.1rem,5vw,4.5rem); line-height:1.06; letter-spacing:-.03em; overflow-wrap:anywhere; text-wrap:balance; }
+.hm-text p { margin:0 0 1.4em; overflow-wrap:anywhere; }
+.hm-text .hm-badge { margin:0; font-size:.85rem; font-weight:750; letter-spacing:.02em; }
+.hm-cta { display:inline-block; padding:.75rem 1.15rem; min-height:2.75rem; border-radius:.6rem; background:var(--hm-accent); color:var(--hm-card); font-weight:650; text-decoration:none; }
+.hm-media { margin:0; min-width:0; }
+.hm-panel { position:relative; display:grid; aspect-ratio:var(--hm-ratio); overflow:hidden; border-radius:1.2rem; background:var(--hm-card); box-shadow:0 0 0 1px rgba(128,140,150,.4); }
+.hm-fallback { margin:0; place-self:center; padding:2rem; text-align:center; overflow-wrap:anywhere; }
+.hm-poster, .hm-panel video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:var(--hm-focus,50% 50%); background:var(--hm-card); }
+.hm-controls { position:absolute; inset:auto .8rem .8rem .8rem; display:flex; flex-flow:row-reverse wrap-reverse; align-items:center; gap:.5rem; pointer-events:none; }
+.hm-captions .hm-controls { inset:.8rem .8rem auto .8rem; flex-wrap:wrap; }
+.hm-controls > * { pointer-events:auto; }
+.hm-controls button { display:inline-flex; align-items:center; gap:.55rem; min-height:2.75rem; padding:.6rem 1rem; border:2px solid #fff; border-radius:999px; background:rgba(6,14,24,.86); color:#fff; font:inherit; font-size:1rem; font-weight:650; line-height:1.2; cursor:pointer; }
+.hm-toggle::before { content:""; flex:none; width:0; height:0; border-style:solid; border-color:transparent transparent transparent #fff; border-width:.42em 0 .42em .7em; }
+.hm-toggle[data-state="pause"]::before { width:.7em; height:.84em; border-width:0 .24em; border-color:transparent #fff; }
+.hm-status { margin:0; max-width:100%; padding:.45rem .8rem; border-radius:.8rem; background:rgba(6,14,24,.86); color:#fff; font-size:.92rem; line-height:1.35; overflow-wrap:anywhere; }
+.hm-quiet, .hm-sr { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0; }
+.hm a:focus-visible, .hm button:focus-visible { outline:4px solid var(--hm-accent); outline-offset:4px; }
+.hm-controls button:focus-visible { outline:3px solid #fff; outline-offset:3px; box-shadow:0 0 0 8px rgba(6,14,24,.86); }
+.hm-details { max-width:76rem; margin:auto; padding:1rem clamp(1rem,5vw,4rem) clamp(1rem,5vw,4rem); }
+.hm-details h2 { margin:0 0 .4em; padding-top:1rem; border-top:1px solid currentColor; font-size:1.4rem; }
+.hm-details p { margin:0; overflow-wrap:anywhere; }
+.hm-stacked .hm-hero { grid-template-columns:minmax(0,1fr); align-items:start; }
+.hm-stacked .hm-text { max-width:46rem; }
+.hm-cover .hm-hero { max-width:none; min-height:min(88vh,52rem); padding:0; grid-template-columns:minmax(0,1fr); align-items:end; }
+.hm-cover .hm-media, .hm-cover .hm-panel { position:absolute; inset:0; }
+.hm-cover .hm-panel { aspect-ratio:auto; border-radius:0; box-shadow:none; }
+.hm-cover .hm-panel::after { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg,rgba(4,10,18,.84),rgba(4,10,18,.5) 48%,rgba(4,10,18,0) 82%); }
+.hm-cover .hm-controls { z-index:2; }
+.hm-cover .hm-text { position:relative; z-index:1; max-width:40rem; padding:clamp(1.5rem,6vw,5rem); color:#fff; pointer-events:none; }
+.hm-cover .hm-text > * { pointer-events:auto; }
+.hm-cover .hm-cta { background:#fff; color:#0b1620; }
+.hm-cover .hm-cta:focus-visible { outline-color:#fff; }
+@media (max-width:700px) {
+  .hm-hero { grid-template-columns:minmax(0,1fr); }
+  .hm-cover .hm-panel::after { background:linear-gradient(0deg,rgba(4,10,18,.88),rgba(4,10,18,.55) 55%,rgba(4,10,18,.1)); }
+  .hm-cover .hm-controls { inset:.8rem .8rem auto .8rem; flex-wrap:wrap; }
+}
+$accent_css</style>
+<div class="hm hm-$layout$captions_class" style="--hm-ratio:$ratio$focus_style">
+<section class="hm-hero" aria-labelledby="hm-headline">
+<div class="hm-text">
+$badge_html<h1 id="hm-headline">$headline</h1>
+<p>$summary</p>
+<a class="hm-cta" href="$cta_href">$cta_label</a>
+</div>
+<figure class="hm-media" id="hm-media">
+<div class="hm-panel">
+<p class="hm-fallback" aria-hidden="true">$poster_alt</p>
+<img class="hm-poster" id="hm-poster" src="$poster" alt="$poster_alt">
+<video id="hm-video" hidden$muted playsinline disablepictureinpicture preload="none" aria-describedby="hm-caption" data-src="$video"$video_data></video>
+<div class="hm-controls">
+<button class="hm-toggle" id="hm-toggle" type="button" aria-controls="hm-video" data-state="play" hidden>$ui_play</button>
+$sound_html<p class="hm-status hm-quiet" id="hm-status" role="status" aria-live="polite">$ui_idle</p>
+</div>
+</div>
+<figcaption class="hm-sr" id="hm-caption">$ui_note</figcaption>
+</figure>
+</section>
+$details_html<div id="hm-messages" hidden data-lang="$lang" data-play="$ui_play" data-pause="$ui_pause" data-idle="$ui_idle" data-initial="$ui_initial" data-loading="$ui_loading" data-playing="$ui_playing" data-paused="$ui_paused" data-ended="$ui_ended" data-offscreen="$ui_offscreen" data-failed="$ui_failed" data-reduced="$ui_reduced" data-mute="$ui_mute" data-unmute="$ui_unmute" data-captions-label="$ui_captions"></div>
+</div>
+<script>
+(() => {
+'use strict';
+const video = document.querySelector('#hm-video');
+const poster = document.querySelector('#hm-poster');
+const fallback = document.querySelector('.hm-fallback');
+const toggle = document.querySelector('#hm-toggle');
+const sound = document.querySelector('#hm-sound');
+const status = document.querySelector('#hm-status');
+const panel = document.querySelector('#hm-media .hm-panel');
+const words = document.querySelector('#hm-messages').dataset;
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+let offscreen = false;
+let request = 0;
+let starting = false;
+let startedAt = 0;
+function active() { return toggle.textContent === words.pause; }
+// the status line is always there for screen readers; it shows on the picture only when it has news
+function sync() {
+  toggle.dataset.state = active() ? 'pause' : 'play';
+  status.classList.toggle('hm-quiet', [words.idle, words.initial, words.playing].includes(status.textContent));
+}
+new MutationObserver(sync).observe(panel, {childList:true, characterData:true, subtree:true});
+function syncFallback() { fallback.hidden = !poster.hidden || !video.hidden; fallback.toggleAttribute('aria-hidden', fallback.hidden); }
+function showStatic() { video.hidden = true; poster.hidden = !poster.complete || poster.naturalWidth === 0; syncFallback(); }
+function restingMessage() {
+  if (video.error) return words.failed;
+  if (video.ended) return words.ended;
+  return video.getAttribute('src') && video.currentTime > 0 ? words.paused : words.initial;
+}
+function paused(message) {
+  const cancelled = starting;
+  request += 1;
+  starting = false;
+  startedAt = 0;
+  video.pause();
+  if (cancelled) { video.removeAttribute('src'); video.load(); }
+  toggle.textContent = words.play;
+  showStatic();
+  status.textContent = message || words.paused;
+}
+function autoPause() { if (starting || !video.paused) paused(); }
+// captions are fetched with the video, on the first Play, so nothing loads before it
+function addCaptions() {
+  if (!video.dataset.captions || video.querySelector('track')) return;
+  const track = document.createElement('track');
+  track.kind = 'captions';
+  track.label = words.captionsLabel;
+  track.srclang = words.lang;
+  track.src = video.dataset.captions;
+  track.default = true;
+  video.append(track);
+}
+if (video.dataset.webm && video.canPlayType('video/webm')) video.dataset.src = video.dataset.webm;
+poster.addEventListener('error', () => { poster.hidden = true; syncFallback(); });
+poster.addEventListener('load', () => { if (video.hidden) poster.hidden = false; syncFallback(); });
+video.addEventListener('error', () => { if (video.getAttribute('src')) paused(words.failed); });
+video.addEventListener('ended', () => paused(words.ended));
+video.addEventListener('pause', () => { if (!starting && !video.ended && active()) paused(); });
+video.addEventListener('waiting', () => { if (!starting && active()) status.textContent = words.loading; });
+video.addEventListener('playing', () => { if (!starting && active()) status.textContent = words.playing; });
+toggle.addEventListener('click', async () => {
+  if (startedAt && performance.now() - startedAt < 400) return;
+  if (starting || !video.paused) { paused(); return; }
+  if (document.hidden || offscreen) { status.textContent = words.offscreen; return; }
+  const token = ++request;
+  starting = true;
+  startedAt = performance.now();
+  toggle.textContent = words.pause;
+  status.textContent = words.loading;
+  if (video.error) { video.removeAttribute('src'); video.load(); }
+  addCaptions();
+  if (!video.getAttribute('src')) video.src = video.dataset.src;
+  try {
+    await video.play();
+    if (token !== request) return;
+    if (document.hidden || offscreen) { paused(); return; }
+    starting = false;
+    video.hidden = false;
+    poster.hidden = true;
+    syncFallback();
+    status.textContent = words.playing;
+  } catch (_) { if (token === request) paused(words.failed); }
+});
+if (sound) {
+  sound.addEventListener('click', () => { video.muted = !video.muted; sound.textContent = video.muted ? words.unmute : words.mute; });
+  sound.hidden = false;
+}
+document.addEventListener('visibilitychange', () => { if (document.hidden) autoPause(); });
+if ('IntersectionObserver' in window) {
+  new IntersectionObserver(entries => {
+    offscreen = !entries[0].isIntersecting || entries[0].intersectionRatio < 0.25;
+    if (offscreen) autoPause();
+  }, {threshold:[0,0.25]}).observe(panel);
+} else {
+  const checkVisible = () => {
+    const box = panel.getBoundingClientRect();
+    const seenHeight = Math.max(0, Math.min(box.bottom, innerHeight) - Math.max(box.top, 0));
+    const seenWidth = Math.max(0, Math.min(box.right, innerWidth) - Math.max(box.left, 0));
+    offscreen = box.width * box.height === 0 || (seenHeight * seenWidth) / (box.width * box.height) < 0.25;
+    if (offscreen) autoPause();
+  };
+  window.addEventListener('scroll', checkVisible, {passive:true});
+  window.addEventListener('resize', checkVisible);
+  checkVisible();
+}
+const motionChange = () => {
+  if (reduced.matches) { if (starting || !video.paused) paused(words.reduced); else status.textContent = words.reduced; }
+  else if (status.textContent === words.reduced) status.textContent = restingMessage();
+};
+if (reduced.addEventListener) reduced.addEventListener('change', motionChange);
+else reduced.addListener(motionChange);
+toggle.hidden = false;
+status.textContent = reduced.matches ? words.reduced : words.initial;
+if (poster.complete && poster.naturalWidth === 0) poster.hidden = true;
+syncFallback();
+sync();
+})();
+</script>

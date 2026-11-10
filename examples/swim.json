@@ -1,0 +1,16 @@
+{
+  "lang": "en",
+  "title": "Saltline Swim School · Hero in Motion example",
+  "badge": "Fictional example",
+  "headline": "Float first. Laps later.",
+  "summary": "Saltline Swim School: small, calm classes for children and nervous grown-ups, in a warm pool by the harbour.",
+  "cta_label": "See the timetable",
+  "cta_href": "#details",
+  "video": "./swim.mp4",
+  "poster": "./poster-swim.svg",
+  "poster_alt": "Seen from above, a child in a coral swimsuit floats on their back in a bright blue pool between two lane ropes, next to a swim ring and two kickboards. A still illustration.",
+  "layout": "stacked",
+  "accent": "#0b5a9e",
+  "accent_dark": "#8fd0ff",
+  "details": "Saltline Swim School is a made-up brand for this example. It shows the stacked layout with its own colours: the picture runs the full width under the words."
+}

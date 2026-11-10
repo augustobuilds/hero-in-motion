@@ -1,0 +1,64 @@
+{
+  "name": "Hero in Motion",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 Augusto Burgos",
+  "authorship": "Original example data, scripts, tests, guides and illustrations created for this repository.",
+  "assets": [
+    {
+      "path": "examples/poster.svg",
+      "origin": "Original SVG poster drawn with code for this repository (northern lights over a lake, for the fictional brand Lantern Lake Cabins), labelled as a fictional example; illustration, not a photograph. film/explainer.html animates its layers into the example's video."
+    },
+    {
+      "path": "examples/poster-es.svg",
+      "origin": "Spanish copy of examples/poster.svg with a translated title, description and label; original illustration drawn with code."
+    },
+    {
+      "path": "examples/poster-swim.svg",
+      "origin": "Original SVG poster drawn with code for this repository (a child floating in a pool, seen from above, for the fictional brand Saltline Swim School); illustration, not a photograph."
+    },
+    {
+      "path": "examples/poster-radio.svg",
+      "origin": "Original SVG poster drawn with code for this repository (a lit studio window in a night city, for the fictional brand Late Window Radio); illustration, not a photograph."
+    },
+    {
+      "path": "assets/hero-anatomy-diagram.svg",
+      "origin": "Original source-authored SVG diagram; illustration, not a rendered film frame or photograph."
+    },
+    {
+      "path": "assets/social-card.html",
+      "origin": "Original source-authored page over examples/poster.svg; docs/social-card.png is a 1280 x 640 screenshot of it."
+    },
+    {
+      "path": "film/explainer.html",
+      "origin": "Original source-authored canvas animation; draws an illustration of the kit's page, not a screen recording."
+    },
+    {
+      "path": "media/hero-in-motion-demo.mp4",
+      "origin": "Rendered from film/explainer.html by scripts/render_film.py (--format square --lang en); procedural, no AI video model, no third-party footage; the soundtrack is synthesised by scripts/score_film.py from the film's cues, no samples or third-party audio."
+    },
+    {
+      "path": "media/hero-in-motion-demo-poster.png",
+      "origin": "The final frame (the end card) of media/hero-in-motion-demo.mp4, rendered as a still by scripts/render_film.py (--format square --lang en --still 15.9667)."
+    },
+    {
+      "path": "docs/lantern-lake.mp4, docs/lantern-lake.webm",
+      "origin": "The Lantern Lake example's own 10-second clip, rendered from film/explainer.html by scripts/render_film.py (--format clip); the WebM is a VP9 copy of the same frames. Procedural, no AI video model, no third-party footage, silent."
+    },
+    {
+      "path": "docs/swim.mp4, docs/radio.mp4, docs/radio.webm",
+      "origin": "The two extra examples' 10-second clips, rendered from examples/poster-swim.svg and examples/poster-radio.svg by scripts/render_film.py (--format clip --poster), then re-encoded where needed to pass scripts/inspect_media.py --check. Procedural, no AI video model, no third-party footage, silent."
+    },
+    {
+      "path": "docs/*.html, docs/poster*.svg",
+      "origin": "Built by scripts/build_demo.py from examples/ and templates/demo/; the posters are copies of the ones in examples/."
+    }
+  ],
+  "example_data": "examples/hero.json and examples/hero.es.json are fictional homepage examples for a made-up brand, Lantern Lake Cabins; examples/swim.json (Saltline Swim School) and examples/radio.json (Late Window Radio) are two more made-up brands. Each example's video is a clip of its own poster, drawn with code (docs/).",
+  "generated_media": "The sample film in media/ and the examples' clips in docs/, all rendered by this repository's own scripts/render_film.py from film/explainer.html and film/poster-clip.html.",
+  "third_party_assets": [],
+  "external_dependencies": [
+    "Optional: an already-installed ffprobe for scripts/inspect_media.py. The kit never downloads it.",
+    "Optional: Playwright for Python with Chromium and FFmpeg, for scripts/render_film.py and tests/test_browser.py; Playwright alone for scripts/measure_page.py. The kit never installs them."
+  ],
+  "network_access": "none (scripts/measure_page.py serves the page's folder to 127.0.0.1 only)"
+}

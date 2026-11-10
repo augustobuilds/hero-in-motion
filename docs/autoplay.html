@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The autoplay version · Hero in Motion live demo</title>
+<meta name="description" content="The same hero built the usual way, with autoplay, and a meter of the video it fetches without being asked.">
+<link rel="canonical" href="https://augustobuilds.github.io/hero-in-motion/autoplay.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The autoplay version · Hero in Motion live demo">
+<meta property="og:description" content="The same hero built the usual way, with autoplay, and a meter of the video it fetches without being asked.">
+<meta property="og:url" content="https://augustobuilds.github.io/hero-in-motion/autoplay.html">
+<meta property="og:image" content="https://augustobuilds.github.io/hero-in-motion/social-card.png">
+<meta property="og:image:alt" content="Hero in Motion: a homepage hero that waits for Play. Northern lights over a lake, with a Play button on the picture.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2306142a'/%3E%3Cpath d='M12 9l12 7-12 7z' fill='%235dffae'/%3E%3C/svg%3E">
+<style>
+html { color-scheme:light dark; scroll-padding-top:5rem; }
+body { margin:0; font:1.1rem/1.55 system-ui,sans-serif; background:#f1f4f1; color:#10202d; }
+.demo-bar { position:sticky; top:0; z-index:5; display:flex; flex-wrap:wrap; align-items:center; gap:.4rem 1.1rem; padding:.55rem clamp(1rem,5vw,4rem); background:#06142a; color:#f4f1e8; font-size:.95rem; }
+.demo-bar a { color:#f4f1e8; text-underline-offset:.2em; }
+.demo-bar a[aria-current] { color:#5dffae; text-decoration:none; font-weight:650; }
+.demo-name { font-weight:750; text-decoration:none; letter-spacing:-.01em; }
+.demo-name span { color:#5dffae; }
+.demo-meter { margin:0; padding:.2rem .7rem; border:1.5px solid #5dffae; border-radius:999px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.demo-meter b { color:#5dffae; }
+.demo-auto .demo-meter { border-color:#ffb86b; }
+.demo-auto .demo-meter b { color:#ffb86b; }
+.demo-nav { display:flex; flex-wrap:wrap; gap:.2rem 1rem; margin-left:auto; align-items:center; }
+.demo-get { padding:.3rem .8rem; border-radius:.5rem; background:#5dffae; color:#06142a !important; font-weight:700; text-decoration:none; }
+.demo-bar a:focus-visible, .demo-bar button:focus-visible { outline:3px solid #fff; outline-offset:3px; }
+.demo-stop { font:inherit; font-weight:650; padding:.25rem .8rem; border-radius:999px; border:1.5px solid #f4f1e8; background:none; color:#f4f1e8; cursor:pointer; }
+.demo-wrap { max-width:76rem; margin:auto; padding:clamp(1.5rem,4vw,3rem) clamp(1rem,5vw,4rem); }
+.demo-wrap h2 { margin:0 0 .6em; font-size:clamp(1.5rem,3vw,2.2rem); line-height:1.15; letter-spacing:-.02em; text-wrap:balance; }
+.demo-wrap p { margin:0 0 1em; max-width:46rem; }
+.demo-wrap a { color:#0b6a52; text-underline-offset:.2em; }
+.demo-wrap a:focus-visible { outline:3px solid #0b6a52; outline-offset:3px; }
+.demo-band { background:#06142a; color:#f4f1e8; }
+.demo-band a { color:#5dffae; }
+.demo-band a:focus-visible { outline-color:#5dffae; }
+.demo-tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:1rem; margin:0 0 1.2rem; padding:0; list-style:none; }
+.demo-tiles li { padding:1.1rem 1.2rem; border-radius:1rem; background:rgba(244,241,232,.07); box-shadow:0 0 0 1px rgba(244,241,232,.18); }
+.demo-num { margin:0 0 .15em !important; font-size:clamp(2.2rem,5vw,3.4rem); font-weight:800; line-height:1.05; letter-spacing:-.03em; color:#5dffae; font-variant-numeric:tabular-nums; }
+.demo-auto .demo-num { color:#ffb86b; }
+.demo-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(17rem,1fr)); gap:.9rem 2rem; margin:0; padding:0; list-style:none; }
+.demo-list li { padding-top:.8rem; border-top:2px solid #0b6a52; }
+.demo-list b { display:block; }
+.demo-looks { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:1.2rem; margin:0; padding:0; list-style:none; }
+.demo-looks a { display:block; border-radius:1rem; overflow:hidden; background:#fff; color:inherit; text-decoration:none; box-shadow:0 0 0 1px rgba(128,140,150,.4); }
+.demo-looks img { display:block; width:100%; height:auto; aspect-ratio:16 / 9; object-fit:cover; }
+.demo-looks span { display:block; padding:.7rem 1rem .9rem; }
+.demo-looks b { display:block; }
+.demo-looks a[aria-current] { box-shadow:0 0 0 3px #0b6a52; }
+.demo-code { margin:0 0 1em; padding:1rem 1.2rem; border-radius:.8rem; background:#06142a; color:#f4f1e8; font:.95rem/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; overflow-x:auto; }
+.demo-foot { font-size:.95rem; }
+.demo-foot p { max-width:none; }
+@media (prefers-color-scheme:dark) {
+  body { background:#09121b; color:#e7efea; }
+  .demo-wrap a { color:#86e3c3; }
+  .demo-wrap a:focus-visible { outline-color:#86e3c3; }
+  .demo-band a { color:#5dffae; }
+  .demo-list li { border-color:#86e3c3; }
+  .demo-looks a { background:#0f1c28; }
+  .demo-looks a[aria-current] { box-shadow:0 0 0 3px #86e3c3; }
+  .demo-band { background:#040c18; }
+}
+@media (max-width:700px) { .demo-nav { margin-left:0; } }
+</style>
+</head>
+<body class="demo-auto">
+<header class="demo-bar" id="demo-bar" data-sizes="{&quot;lantern-lake.mp4&quot;:683284,&quot;lantern-lake.webm&quot;:258225}">
+<a class="demo-name" href="./">Hero in <span>Motion</span></a>
+<p class="demo-meter" role="status">Video fetched without asking: <b id="demo-meter">0 B</b></p>
+<button class="demo-stop" id="demo-stop" type="button" data-stop="Stop the video" data-start="Start the video">Stop the video</button>
+<nav class="demo-nav" aria-label="Demo pages">
+<a href="./">Lake cabins</a>
+<a href="swim.html">Swim school</a>
+<a href="radio.html">Night radio</a>
+<a href="autoplay.html" aria-current="page">Autoplay version</a>
+<a class="demo-get" href="https://github.com/augustobuilds/hero-in-motion">Get the kit</a>
+</nav>
+</header>
+<main>
+<style>
+.hm { --hm-bg:#f1f4f1; --hm-ink:#10202d; --hm-card:#ffffff; --hm-accent:#0b6a52; color-scheme:light dark; background:var(--hm-bg); color:var(--hm-ink); }
+@media (prefers-color-scheme:dark) { .hm { --hm-bg:#09121b; --hm-ink:#e7efea; --hm-card:#0f1c28; --hm-accent:#86e3c3; } }
+.hm *, .hm *::before, .hm *::after { box-sizing:border-box; }
+.hm [hidden] { display:none !important; }
+.hm-hero { position:relative; max-width:76rem; margin:auto; padding:clamp(1rem,5vw,4rem); display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:center; gap:clamp(1.5rem,5vw,4rem); }
+.hm-text h1 { margin:.2em 0 .35em; font-size:clamp(2.1rem,5vw,4.5rem); line-height:1.06; letter-spacing:-.03em; overflow-wrap:anywhere; text-wrap:balance; }
+.hm-text p { margin:0 0 1.4em; overflow-wrap:anywhere; }
+.hm-text .hm-badge { margin:0; font-size:.85rem; font-weight:750; letter-spacing:.02em; }
+.hm-cta { display:inline-block; padding:.75rem 1.15rem; min-height:2.75rem; border-radius:.6rem; background:var(--hm-accent); color:var(--hm-card); font-weight:650; text-decoration:none; }
+.hm-media { margin:0; min-width:0; }
+.hm-panel { position:relative; display:grid; aspect-ratio:var(--hm-ratio); overflow:hidden; border-radius:1.2rem; background:var(--hm-card); box-shadow:0 0 0 1px rgba(128,140,150,.4); }
+.hm-fallback { margin:0; place-self:center; padding:2rem; text-align:center; overflow-wrap:anywhere; }
+.hm-poster, .hm-panel video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:var(--hm-focus,50% 50%); background:var(--hm-card); }
+.hm-controls { position:absolute; inset:auto .8rem .8rem .8rem; display:flex; flex-flow:row-reverse wrap-reverse; align-items:center; gap:.5rem; pointer-events:none; }
+.hm-captions .hm-controls { inset:.8rem .8rem auto .8rem; flex-wrap:wrap; }
+.hm-controls > * { pointer-events:auto; }
+.hm-controls button { display:inline-flex; align-items:center; gap:.55rem; min-height:2.75rem; padding:.6rem 1rem; border:2px solid #fff; border-radius:999px; background:rgba(6,14,24,.86); color:#fff; font:inherit; font-size:1rem; font-weight:650; line-height:1.2; cursor:pointer; }
+.hm-toggle::before { content:""; flex:none; width:0; height:0; border-style:solid; border-color:transparent transparent transparent #fff; border-width:.42em 0 .42em .7em; }
+.hm-toggle[data-state="pause"]::before { width:.7em; height:.84em; border-width:0 .24em; border-color:transparent #fff; }
+.hm-status { margin:0; max-width:100%; padding:.45rem .8rem; border-radius:.8rem; background:rgba(6,14,24,.86); color:#fff; font-size:.92rem; line-height:1.35; overflow-wrap:anywhere; }
+.hm-quiet, .hm-sr { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0; }
+.hm a:focus-visible, .hm button:focus-visible { outline:4px solid var(--hm-accent); outline-offset:4px; }
+.hm-controls button:focus-visible { outline:3px solid #fff; outline-offset:3px; box-shadow:0 0 0 8px rgba(6,14,24,.86); }
+.hm-details { max-width:76rem; margin:auto; padding:1rem clamp(1rem,5vw,4rem) clamp(1rem,5vw,4rem); }
+.hm-details h2 { margin:0 0 .4em; padding-top:1rem; border-top:1px solid currentColor; font-size:1.4rem; }
+.hm-details p { margin:0; overflow-wrap:anywhere; }
+.hm-stacked .hm-hero { grid-template-columns:minmax(0,1fr); align-items:start; }
+.hm-stacked .hm-text { max-width:46rem; }
+.hm-cover .hm-hero { max-width:none; min-height:min(88vh,52rem); padding:0; grid-template-columns:minmax(0,1fr); align-items:end; }
+.hm-cover .hm-media, .hm-cover .hm-panel { position:absolute; inset:0; }
+.hm-cover .hm-panel { aspect-ratio:auto; border-radius:0; box-shadow:none; }
+.hm-cover .hm-panel::after { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg,rgba(4,10,18,.84),rgba(4,10,18,.5) 48%,rgba(4,10,18,0) 82%); }
+.hm-cover .hm-controls { z-index:2; }
+.hm-cover .hm-text { position:relative; z-index:1; max-width:40rem; padding:clamp(1.5rem,6vw,5rem); color:#fff; pointer-events:none; }
+.hm-cover .hm-text > * { pointer-events:auto; }
+.hm-cover .hm-cta { background:#fff; color:#0b1620; }
+.hm-cover .hm-cta:focus-visible { outline-color:#fff; }
+@media (max-width:700px) {
+  .hm-hero { grid-template-columns:minmax(0,1fr); }
+  .hm-cover .hm-panel::after { background:linear-gradient(0deg,rgba(4,10,18,.88),rgba(4,10,18,.55) 55%,rgba(4,10,18,.1)); }
+  .hm-cover .hm-controls { inset:.8rem .8rem auto .8rem; flex-wrap:wrap; }
+}
+</style>
+<div class="hm hm-split" style="--hm-ratio:1 / 1">
+<section class="hm-hero" aria-labelledby="demo-headline">
+<div class="hm-text">
+<p class="hm-badge">The usual way, for comparison</p>
+<h1 id="demo-headline">Nights worth staying up for.</h1>
+<p>Lantern Lake Cabins: six timber cabins on a quiet northern lake, where the sky puts on a show most winter nights.</p>
+<a class="hm-cta" href="./">Back to the kit's version</a>
+</div>
+<figure class="hm-media">
+<div class="hm-panel">
+<video autoplay muted loop playsinline poster="./poster.svg" aria-label="Green northern lights over a still lake, mirrored in the water, with a small lit cabin on the shore. A still illustration labelled fictional example.">
+<source src="./lantern-lake.webm" type="video/webm">
+<source src="./lantern-lake.mp4" type="video/mp4">
+</video>
+</div>
+</figure>
+</section>
+</div>
+<section class="demo-band" aria-labelledby="demo-proof">
+<div class="demo-wrap">
+<h2 id="demo-proof">What this page fetched without asking</h2>
+<ul class="demo-tiles">
+<li><p class="demo-num" id="demo-video">0 B</p><p>of video, fetched as soon as the page opened. You did not press anything.</p></li>
+<li><p class="demo-num">0 B</p><p>is what <a href="./">the kit's version</a> of this same hero fetches before you press Play.</p></li>
+</ul>
+<p>This page uses the pattern most heroes with video use: <code>&lt;video autoplay muted loop playsinline&gt;</code>. Nothing in it is broken. It decides for the visitor: the video downloads and moves on every visit, loops for as long as the page is open, and takes no notice of a system that asks for reduced motion. The usual pattern has no pause button either; this demo adds one in the bar above so you can stop it.</p>
+<p><a href="./">Go back to the version that waits for you.</a></p>
+</div>
+</section>
+</main>
+<footer class="demo-wrap demo-foot">
+<p>Lantern Lake Cabins, Saltline Swim School and Late Window Radio are made-up brands, and their pictures and clips are drawn with code. Hero in Motion is free to use under the MIT licence. This demo is built by the kit itself: <code>scripts/build_demo.py</code> places the hero block into this page.</p>
+<p>From the same author, if they fit what you are doing: <a href="https://procvideos.com/">ProcVideos</a> (examples of videos made with code), <a href="https://attainos.com/">Attain OS</a> (briefs, tasks and docs in one place) and <a href="https://attainsoft.co/">AttainSoft</a> (custom engineering).</p>
+</footer>
+<script>
+(() => {
+'use strict';
+// The meter adds up what this browser reports it fetched for the video files. Nothing here loads anything.
+const bar = document.querySelector('#demo-bar');
+const sizes = JSON.parse(bar.dataset.sizes);
+const outs = document.querySelectorAll('#demo-meter, #demo-video');
+const note = document.querySelector('#demo-video-note');
+const video = document.querySelector('video');
+function amount(n) { return n < 1000 ? n + ' B' : n < 1000000 ? Math.round(n / 1000) + ' kB' : (n / 1000000).toFixed(2) + ' MB'; }
+function fetched() {
+  let n = 0;
+  if (!performance.getEntriesByType) return n;
+  for (const entry of performance.getEntriesByType('resource')) {
+    if (/\.(mp4|webm)([?#]|$)/.test(entry.name)) n += entry.transferSize || entry.encodedBodySize || 0;
+  }
+  return n;
+}
+function show() {
+  let n = fetched(), about = '';
+  if (!n && video && video.currentTime > 0) { n = sizes[(video.currentSrc || '').split('/').pop()] || 0; about = n ? 'about ' : ''; }
+  for (const out of outs) out.textContent = about + amount(n);
+  if (note && n) note.textContent = note.dataset.after;
+}
+show();
+setInterval(show, 500);
+const stop = document.querySelector('#demo-stop');
+if (stop && video) stop.addEventListener('click', () => {
+  if (video.paused) { video.play(); stop.textContent = stop.dataset.stop; } else { video.pause(); stop.textContent = stop.dataset.start; }
+});
+})();
+</script>
+</body>
+</html>

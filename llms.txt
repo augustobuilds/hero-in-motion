@@ -1,0 +1,39 @@
+# Hero in Motion
+
+> Standard-library Python kit that builds an accessible homepage hero from JSON, as a standalone HTML page or as a scoped block to paste into an existing page: escaped copy, a local poster (SVG or a photo), and an opt-in local video with no autoplay, preload none, auto-pause when hidden or offscreen, reduced-motion handling, optional captions and sound, three layouts, and fallbacks for missing media or JavaScript. Also checks a supplied video against a size budget with an already-installed ffprobe. Includes a 15-second sample film drawn with code (film/explainer.html, rendered by scripts/render_film.py with optional Playwright + FFmpeg). MIT licensed.
+
+## Start here
+
+- [README](README.md): what the kit does, measured numbers, quick start, making it yours, the fragment, a clip from a poster, the video check, limitations
+- [Live demo](https://augustobuilds.github.io/hero-in-motion/): the three examples with a meter of the video fetched, and an autoplay version for comparison
+- [Guide (English)](guides/quick-start.en.md): build, failure-case checklist, config contract, video inspection
+- [Guía (español)](guides/quick-start.es.md): the same guide in Spanish
+- [Customizing](guides/variations.md): words, layouts, media, pasting the block into a site, colours, languages
+- [Prepare your video](guides/prepare-your-video.md): the budget check, the web copy, the poster frame, captions, a clip from an SVG poster
+- [Reference](guides/reference.md): every file, and troubleshooting
+- [Make the clip with code](guides/make-the-film.md): watch, change and render the sample film; agent prompts
+
+## For agents
+
+- [AGENTS.md](AGENTS.md): layout, commands, working rules
+- [SKILL.md](SKILL.md): skill definition
+- [Prompts](prompts/recreate-and-remix.md): copyable prompts to recreate and remix the kit
+
+## Reference
+
+- [Example config](examples/hero.json): the reference input
+- [Example poster](examples/poster.svg)
+- [Spanish config](examples/hero.es.json)
+- [Spanish poster](examples/poster-es.svg)
+- [Swim school example](examples/swim.json) and [its poster](examples/poster-swim.svg): stacked layout, own colours
+- [Night radio example](examples/radio.json) and [its poster](examples/poster-radio.svg): cover layout, focus point
+- [Poster clip page](film/poster-clip.html): sets an SVG poster in motion
+- [Demo builder](scripts/build_demo.py) and [page measurer](scripts/measure_page.py)
+- [Hero block template](templates/hero.html)
+- [Page template](templates/page.html)
+- [Sample film](media/hero-in-motion-demo.mp4): the 16-second square cut of a kinetic-type trailer with a soundtrack made in code; `render_film.py --format tall` and `--format wide` render the same cut at 9:16 and 16:9
+- [Film source](film/explainer.html): the canvas animation the sample is rendered from
+- [Diagram](assets/hero-anatomy-diagram.svg): source-authored SVG, not a screenshot or rendered frame
+- [Validation record](validation.json)
+- [Provenance](provenance.json)
+- [License](LICENSE)

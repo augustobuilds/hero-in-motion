@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Poster clip · Hero in Motion</title>
+<!--
+  A 10-second clip from any SVG poster: the picture moves gently and ends exactly where it started, so the
+  switch from the poster to the video (and back) cannot be seen.
+
+  The poster says how it moves. Put these attributes on any element of the SVG, usually on a group:
+
+    data-move="dx dy"            drifts that far (in the poster's own units) and comes back
+    data-sway="dx dy [times]"    rocks to and fro that far, `times` times (default 2)
+    data-zoom="amount"           grows by that share of its size and comes back (0.05 = 5 %)
+    data-turn="degrees [times]"  rocks around its own centre, `times` times (default 2)
+    data-pulse="amount [times]"  dims by that share and comes back, `times` times (default 2)
+
+  and on the <svg> itself, data-camera="amount" for a slow push-in on the whole picture and back
+  (default 0.04; 0 turns it off). A poster with none of these still gets the push-in.
+
+  Render it:   python3 scripts/render_film.py --format clip --poster examples/poster-swim.svg --output output/swim.mp4
+  Preview it:  open this file, choose the poster, drag the slider. Nothing moves until you ask.
+
+  The poster is drawn as it is, with scripts, event handlers, embedded pages and outside links removed first.
+  No network, no libraries. The clip is 30 frames a second, 1080 pixels high (at most 1920 wide).
+-->
+<style>
+html, body { margin:0; background:#101418; color:#e8edf0; font:16px/1.5 system-ui, sans-serif; }
+#film { position:relative; overflow:hidden; background:#000; max-width:100%; }
+#film svg { position:absolute; inset:0; width:100%; height:100%; display:block; }
+#help { max-width:46rem; margin:0; padding:1rem; }
+#help label, #help button, #help input { font:inherit; }
+#help input[type=range] { width:100%; }
+.render #help { display:none; }
+</style>
+</head>
+<body>
+<div id="film" style="width:1080px;height:1080px"></div>
+<div id="help">
+<p><label>Choose an SVG poster: <input id="pick" type="file" accept=".svg,image/svg+xml"></label></p>
+<p><label>Time: <input id="seek" type="range" min="0" max="300" value="0" disabled></label>
+<button id="play" type="button" disabled>Play</button> <span id="said">Starts still. It never plays until you press Play.</span></p>
+</div>
+<script>
+'use strict';
+const FPS = 30, DURATION = 10, FRAMES = FPS * DURATION;
+const stage = document.getElementById('film');
+const TAGS = ['move', 'sway', 'zoom', 'turn', 'pulse'];
+let parts = [], root = null, camera = 0.04;
+
+function numbers(text, least, most) {
+  const found = String(text).trim().split(/[\s,]+/).map(Number);
+  if (found.length < least || found.length > most || found.some(n => !Number.isFinite(n))) return null;
+  return found;
+}
+
+// Remove everything that could run or fetch: the poster is a picture, and it is drawn as one.
+function clean(svg) {
+  svg.querySelectorAll('script, foreignObject, iframe, object, embed, audio, video, animate, animateMotion, animateTransform, set').forEach(el => el.remove());
+  for (const el of [svg, ...svg.querySelectorAll('*')]) {
+    for (const attr of [...el.attributes]) {
+      const name = attr.name.toLowerCase();
+      if (name.startsWith('on')) el.removeAttribute(attr.name);
+      else if ((name === 'href' || name === 'xlink:href') && !attr.value.trim().startsWith('#')) el.removeAttribute(attr.name);
+    }
+  }
+  return svg;
+}
+
+function load(text) {
+  const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
+  const svg = doc.documentElement;
+  if (doc.querySelector('parsererror') || svg.localName !== 'svg') throw new Error('not an SVG picture');
+  const box = numbers(svg.getAttribute('viewBox') || '', 4, 4);
+  if (!box || box[2] <= 0 || box[3] <= 0) throw new Error('the <svg> needs a viewBox such as "0 0 1600 900"');
+  let height = 1080, width = Math.round(height * box[2] / box[3] / 2) * 2;
+  if (width > 1920) { width = 1920; height = Math.round(width * box[3] / box[2] / 2) * 2; }
+  root = document.importNode(clean(svg), true);
+  root.removeAttribute('width');
+  root.removeAttribute('height');
+  root.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+  stage.style.width = width + 'px';
+  stage.style.height = height + 'px';
+  stage.replaceChildren(root);
+  const asked = root.getAttribute('data-camera');
+  const cam = asked === null ? [0.04] : numbers(asked, 1, 1);
+  if (!cam) throw new Error('data-camera must be one number such as 0.04');
+  camera = Math.max(0, Math.min(0.5, cam[0]));
+  parts = [];
+  for (const el of root.querySelectorAll(TAGS.map(t => '[data-' + t + ']').join(','))) {
+    const part = {el, was: el.getAttribute('transform') || '', opacity: el.getAttribute('opacity')};
+    for (const tag of TAGS) {
+      if (!el.hasAttribute('data-' + tag)) continue;
+      const limits = {move: [2, 2], sway: [2, 3], zoom: [1, 1], turn: [1, 2], pulse: [1, 2]}[tag];
+      const value = numbers(el.getAttribute('data-' + tag), limits[0], limits[1]);
+      if (!value) throw new Error('data-' + tag + '="' + el.getAttribute('data-' + tag) + '" is not ' + (limits[0] === limits[1] ? limits[0] : limits[0] + ' or ' + limits[1]) + ' number(s)');
+      part[tag] = value;
+    }
+    const b = el.getBBox();
+    part.cx = b.x + b.width / 2;
+    part.cy = b.y + b.height / 2;
+    parts.push(part);
+  }
+  root.dataset.centre = (box[0] + box[2] / 2) + ' ' + (box[1] + box[3] / 2);
+  window.film.width = width;
+  window.film.height = height;
+  window.film.layered = parts.length > 0;
+  frame(0);
+  return {w: width, h: height, moving: parts.length};
+}
+
+// Every motion is 0 at the start and at the end, so the first and last frames are the poster itself.
+function frame(i) {
+  if (!root) return;
+  const u = Math.max(0, Math.min(1, i / FRAMES));
+  const there = Math.sin(Math.PI * u) ** 2;                       // out and back, soft at both ends
+  const soft = Math.min(1, u / 0.12, (1 - u) / 0.12);              // lets the rocking start and stop gently
+  const ease = soft * soft * (3 - 2 * soft);
+  const rock = times => Math.sin(2 * Math.PI * Math.round(times || 2) * u) * ease;
+  const round = n => Math.round(n * 1000) / 1000;
+  const [cx, cy] = root.dataset.centre.split(' ').map(Number);
+  const s = 1 + camera * there;
+  root.style.transformOrigin = '50% 50%';
+  root.style.transform = camera ? 'scale(' + round(s) + ')' : '';
+  for (const p of parts) {
+    let x = 0, y = 0, extra = '';
+    if (p.move) { x += p.move[0] * there; y += p.move[1] * there; }
+    if (p.sway) { const r = rock(p.sway[2]); x += p.sway[0] * r; y += p.sway[1] * r; }
+    if (p.zoom) extra += ' translate(' + round(p.cx) + ' ' + round(p.cy) + ') scale(' + round(1 + p.zoom[0] * there) + ') translate(' + round(-p.cx) + ' ' + round(-p.cy) + ')';
+    if (p.turn) extra += ' rotate(' + round(p.turn[0] * rock(p.turn[1])) + ' ' + round(p.cx) + ' ' + round(p.cy) + ')';
+    x = round(x); y = round(y);
+    const moved = ((x || y) ? 'translate(' + x + ' ' + y + ') ' : '') + p.was + extra;
+    if (moved.trim()) p.el.setAttribute('transform', moved.trim()); else p.el.removeAttribute('transform');
+    if (p.pulse) {
+      const base = p.opacity === null ? 1 : Number(p.opacity);
+      const dip = Math.max(0, Math.min(1, p.pulse[0])) * (0.5 - 0.5 * Math.cos(2 * Math.PI * Math.round(p.pulse[1] || 2) * u));
+      p.el.setAttribute('opacity', round(base * (1 - dip)));
+    }
+  }
+}
+
+window.film = {width: 1080, height: 1080, fps: FPS, duration: DURATION, frames: FRAMES, layered: false, cues: null,
+               ready: Promise.resolve(), load, frame};
+
+// The preview: choose a poster, drag the slider or press Play. Rendering (?render=1) hides it.
+if (new URLSearchParams(location.search).get('render') === '1') document.documentElement.classList.add('render');
+const pick = document.getElementById('pick'), seek = document.getElementById('seek');
+const play = document.getElementById('play'), said = document.getElementById('said');
+let playing = false, began = 0;
+function stop() { playing = false; play.textContent = 'Play'; }
+function tick(now) {
+  if (!playing) return;
+  const i = Math.min(FRAMES, Math.floor((now - began) / 1000 * FPS));
+  seek.value = i;
+  frame(i);
+  if (i >= FRAMES) stop(); else requestAnimationFrame(tick);
+}
+pick.addEventListener('change', async () => {
+  stop();
+  try {
+    const found = load(await pick.files[0].text());
+    seek.disabled = play.disabled = false;
+    seek.value = 0;
+    said.textContent = found.w + ' x ' + found.h + ', ' + (found.moving ? found.moving + ' moving part(s).' : 'no moving parts marked, so only the slow push-in.');
+  } catch (err) { said.textContent = 'Could not use that file: ' + err.message; }
+});
+seek.addEventListener('input', () => { stop(); frame(Number(seek.value)); });
+play.addEventListener('click', () => {
+  if (playing) { stop(); return; }
+  if (Number(seek.value) >= FRAMES) seek.value = 0;
+  playing = true;
+  play.textContent = 'Pause';
+  began = performance.now() - Number(seek.value) / FPS * 1000;
+  requestAnimationFrame(tick);
+});
+</script>
+</body>
+</html>

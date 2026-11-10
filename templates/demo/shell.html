@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>$title</title>
+<meta name="description" content="$description">
+<link rel="canonical" href="$url">
+<meta property="og:type" content="website">
+<meta property="og:title" content="$title">
+<meta property="og:description" content="$description">
+<meta property="og:url" content="$url">
+<meta property="og:image" content="$card">
+<meta property="og:image:alt" content="$card_alt">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2306142a'/%3E%3Cpath d='M12 9l12 7-12 7z' fill='%235dffae'/%3E%3C/svg%3E">
+<style>
+html { color-scheme:light dark; scroll-padding-top:5rem; }
+body { margin:0; font:1.1rem/1.55 system-ui,sans-serif; background:#f1f4f1; color:#10202d; }
+.demo-bar { position:sticky; top:0; z-index:5; display:flex; flex-wrap:wrap; align-items:center; gap:.4rem 1.1rem; padding:.55rem clamp(1rem,5vw,4rem); background:#06142a; color:#f4f1e8; font-size:.95rem; }
+.demo-bar a { color:#f4f1e8; text-underline-offset:.2em; }
+.demo-bar a[aria-current] { color:#5dffae; text-decoration:none; font-weight:650; }
+.demo-name { font-weight:750; text-decoration:none; letter-spacing:-.01em; }
+.demo-name span { color:#5dffae; }
+.demo-meter { margin:0; padding:.2rem .7rem; border:1.5px solid #5dffae; border-radius:999px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.demo-meter b { color:#5dffae; }
+.demo-auto .demo-meter { border-color:#ffb86b; }
+.demo-auto .demo-meter b { color:#ffb86b; }
+.demo-nav { display:flex; flex-wrap:wrap; gap:.2rem 1rem; margin-left:auto; align-items:center; }
+.demo-get { padding:.3rem .8rem; border-radius:.5rem; background:#5dffae; color:#06142a !important; font-weight:700; text-decoration:none; }
+.demo-bar a:focus-visible, .demo-bar button:focus-visible { outline:3px solid #fff; outline-offset:3px; }
+.demo-stop { font:inherit; font-weight:650; padding:.25rem .8rem; border-radius:999px; border:1.5px solid #f4f1e8; background:none; color:#f4f1e8; cursor:pointer; }
+.demo-wrap { max-width:76rem; margin:auto; padding:clamp(1.5rem,4vw,3rem) clamp(1rem,5vw,4rem); }
+.demo-wrap h2 { margin:0 0 .6em; font-size:clamp(1.5rem,3vw,2.2rem); line-height:1.15; letter-spacing:-.02em; text-wrap:balance; }
+.demo-wrap p { margin:0 0 1em; max-width:46rem; }
+.demo-wrap a { color:#0b6a52; text-underline-offset:.2em; }
+.demo-wrap a:focus-visible { outline:3px solid #0b6a52; outline-offset:3px; }
+.demo-band { background:#06142a; color:#f4f1e8; }
+.demo-band a { color:#5dffae; }
+.demo-band a:focus-visible { outline-color:#5dffae; }
+.demo-tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:1rem; margin:0 0 1.2rem; padding:0; list-style:none; }
+.demo-tiles li { padding:1.1rem 1.2rem; border-radius:1rem; background:rgba(244,241,232,.07); box-shadow:0 0 0 1px rgba(244,241,232,.18); }
+.demo-num { margin:0 0 .15em !important; font-size:clamp(2.2rem,5vw,3.4rem); font-weight:800; line-height:1.05; letter-spacing:-.03em; color:#5dffae; font-variant-numeric:tabular-nums; }
+.demo-auto .demo-num { color:#ffb86b; }
+.demo-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(17rem,1fr)); gap:.9rem 2rem; margin:0; padding:0; list-style:none; }
+.demo-list li { padding-top:.8rem; border-top:2px solid #0b6a52; }
+.demo-list b { display:block; }
+.demo-looks { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:1.2rem; margin:0; padding:0; list-style:none; }
+.demo-looks a { display:block; border-radius:1rem; overflow:hidden; background:#fff; color:inherit; text-decoration:none; box-shadow:0 0 0 1px rgba(128,140,150,.4); }
+.demo-looks img { display:block; width:100%; height:auto; aspect-ratio:16 / 9; object-fit:cover; }
+.demo-looks span { display:block; padding:.7rem 1rem .9rem; }
+.demo-looks b { display:block; }
+.demo-looks a[aria-current] { box-shadow:0 0 0 3px #0b6a52; }
+.demo-code { margin:0 0 1em; padding:1rem 1.2rem; border-radius:.8rem; background:#06142a; color:#f4f1e8; font:.95rem/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; overflow-x:auto; }
+.demo-foot { font-size:.95rem; }
+.demo-foot p { max-width:none; }
+@media (prefers-color-scheme:dark) {
+  body { background:#09121b; color:#e7efea; }
+  .demo-wrap a { color:#86e3c3; }
+  .demo-wrap a:focus-visible { outline-color:#86e3c3; }
+  .demo-band a { color:#5dffae; }
+  .demo-list li { border-color:#86e3c3; }
+  .demo-looks a { background:#0f1c28; }
+  .demo-looks a[aria-current] { box-shadow:0 0 0 3px #86e3c3; }
+  .demo-band { background:#040c18; }
+}
+@media (max-width:700px) { .demo-nav { margin-left:0; } }
+</style>
+</head>
+<body class="$body_class">
+<header class="demo-bar" id="demo-bar" data-sizes="$sizes">
+<a class="demo-name" href="./">Hero in <span>Motion</span></a>
+<p class="demo-meter" role="status">$meter_label <b id="demo-meter">0 B</b></p>
+$stop<nav class="demo-nav" aria-label="Demo pages">
+$nav<a class="demo-get" href="$repo">Get the kit</a>
+</nav>
+</header>
+<main>
+$main</main>
+<footer class="demo-wrap demo-foot">
+<p>Lantern Lake Cabins, Saltline Swim School and Late Window Radio are made-up brands, and their pictures and clips are drawn with code. Hero in Motion is free to use under the MIT licence. This demo is built by the kit itself: <code>scripts/build_demo.py</code> places the hero block into this page.</p>
+<p>From the same author, if they fit what you are doing: <a href="https://procvideos.com/">ProcVideos</a> (examples of videos made with code), <a href="https://attainos.com/">Attain OS</a> (briefs, tasks and docs in one place) and <a href="https://attainsoft.co/">AttainSoft</a> (custom engineering).</p>
+</footer>
+<script>
+(() => {
+'use strict';
+// The meter adds up what this browser reports it fetched for the video files. Nothing here loads anything.
+const bar = document.querySelector('#demo-bar');
+const sizes = JSON.parse(bar.dataset.sizes);
+const outs = document.querySelectorAll('#demo-meter, #demo-video');
+const note = document.querySelector('#demo-video-note');
+const video = document.querySelector('video');
+function amount(n) { return n < 1000 ? n + ' B' : n < 1000000 ? Math.round(n / 1000) + ' kB' : (n / 1000000).toFixed(2) + ' MB'; }
+function fetched() {
+  let n = 0;
+  if (!performance.getEntriesByType) return n;
+  for (const entry of performance.getEntriesByType('resource')) {
+    if (/\.(mp4|webm)([?#]|$$)/.test(entry.name)) n += entry.transferSize || entry.encodedBodySize || 0;
+  }
+  return n;
+}
+function show() {
+  let n = fetched(), about = '';
+  if (!n && video && video.currentTime > 0) { n = sizes[(video.currentSrc || '').split('/').pop()] || 0; about = n ? 'about ' : ''; }
+  for (const out of outs) out.textContent = about + amount(n);
+  if (note && n) note.textContent = note.dataset.after;
+}
+show();
+setInterval(show, 500);
+const stop = document.querySelector('#demo-stop');
+if (stop && video) stop.addEventListener('click', () => {
+  if (video.paused) { video.play(); stop.textContent = stop.dataset.stop; } else { video.pause(); stop.textContent = stop.dataset.start; }
+});
+})();
+</script>
+</body>
+</html>

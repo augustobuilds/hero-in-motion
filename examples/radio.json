@@ -1,0 +1,17 @@
+{
+  "lang": "en",
+  "title": "Late Window Radio · Hero in Motion example",
+  "badge": "Fictional example",
+  "headline": "Still up? So are we.",
+  "summary": "Late Window Radio: slow records and quiet talk from a one-room studio, every night from eleven until the first trains.",
+  "cta_label": "Hear last night",
+  "cta_href": "#details",
+  "video": "./radio.mp4",
+  "poster": "./poster-radio.svg",
+  "poster_alt": "A city at night. In one lit window a radio host in headphones sits at a microphone under a red on-air lamp, and a rooftop mast sends out rings of signal. A still illustration.",
+  "layout": "cover",
+  "focus": "66% 50%",
+  "accent": "#a3470a",
+  "accent_dark": "#ffb86b",
+  "details": "Late Window Radio is a made-up brand for this example. It shows the cover layout: the picture fills the hero, the words sit on top of it, and focus keeps the lit window in view on a narrow screen."
+}
